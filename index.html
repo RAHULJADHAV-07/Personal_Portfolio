@@ -952,46 +952,63 @@ function myFunction() {
 
 // Function to toggle skill categories
 function toggleSkillCategory(element) {
+  // Prevent rapid clicking
+  if (element.dataset.animating === 'true') return;
+  
   const category = element.parentElement;
   const skillsGrid = category.querySelector('.skills-grid');
   const toggleIcon = element.querySelector('.toggle-icon');
   
-  if (skillsGrid.classList.contains('collapsed')) {
-    // Expand the category
-    skillsGrid.classList.remove('collapsed');
-    skillsGrid.classList.add('expanded');
-    toggleIcon.style.transform = 'rotate(180deg)';
-    
-    // Animate skill bars
-    setTimeout(() => {
-      const skillItems = skillsGrid.querySelectorAll('.skill-item');
-      skillItems.forEach((item, index) => {
-        setTimeout(() => {
+  // Mark as animating
+  element.dataset.animating = 'true';
+  
+  // Use requestAnimationFrame for smooth animations
+  requestAnimationFrame(() => {
+    if (skillsGrid.classList.contains('collapsed')) {
+      // Expand the category
+      skillsGrid.classList.remove('collapsed');
+      skillsGrid.classList.add('expanded');
+      category.classList.remove('category-collapsed');
+      toggleIcon.style.transform = 'rotate(180deg)';
+      
+      // Animate skill bars after expansion completes
+      setTimeout(() => {
+        const skillItems = skillsGrid.querySelectorAll('.skill-item');
+        skillItems.forEach((item, index) => {
           const progress = item.querySelector('.skill-progress');
           const level = item.getAttribute('data-level');
           if (progress && level) {
-            progress.style.width = level + '%';
+            // Use a single timeout for all items to reduce lag
+            setTimeout(() => {
+              progress.style.width = level + '%';
+            }, index * 30); // Even faster animation
           }
           item.setAttribute('data-visible', 'true');
-        }, index * 100);
+        });
+      }, 50); // Reduced initial delay
+    } else {
+      // Collapse the category
+      skillsGrid.classList.remove('expanded');
+      skillsGrid.classList.add('collapsed');
+      category.classList.add('category-collapsed');
+      toggleIcon.style.transform = 'rotate(0deg)';
+      
+      // Reset skill bars immediately
+      const skillItems = skillsGrid.querySelectorAll('.skill-item');
+      skillItems.forEach((item) => {
+        const progress = item.querySelector('.skill-progress');
+        if (progress) {
+          progress.style.width = '0%';
+        }
+        item.setAttribute('data-visible', 'false');
       });
-    }, 300);
-  } else {
-    // Collapse the category
-    skillsGrid.classList.remove('expanded');
-    skillsGrid.classList.add('collapsed');
-    toggleIcon.style.transform = 'rotate(0deg)';
+    }
     
-    // Reset skill bars
-    const skillItems = skillsGrid.querySelectorAll('.skill-item');
-    skillItems.forEach((item) => {
-      const progress = item.querySelector('.skill-progress');
-      if (progress) {
-        progress.style.width = '0%';
-      }
-      item.setAttribute('data-visible', 'false');
-    });
-  }
+    // Allow clicking again after animation
+    setTimeout(() => {
+      element.dataset.animating = 'false';
+    }, 300);
+  });
 }
 
 
@@ -1008,7 +1025,8 @@ document.addEventListener('DOMContentLoaded', function () {
         backSpeed: 30,
         backDelay: 2000,
         loop: true,
-        // cursorChar: '|',
+        cursorChar: '|',
+        showCursor: true,
         fadeOut: true,
         fadeOutClass: 'typed-fade-out',
         fadeOutDelay: 500

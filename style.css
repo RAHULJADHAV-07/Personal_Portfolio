@@ -149,11 +149,31 @@ padding-bottom: 0;
   font-size: clamp(1.8rem, 4vw, 2.5rem);
   color: #fff;
   text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+  display: inline-block;
+  line-height: 1.2;
 }
 
 .typed-cursor {
   font-size: clamp(1.8rem, 4vw, 2.5rem);
   color: red;
+  display: inline;
+  vertical-align: baseline;
+  line-height: 1.2;
+}
+
+/* Ensure cursor stays inline with text */
+.typed-text .typed-cursor {
+  margin-left: 2px;
+}
+
+/* Additional targeting for typed.js generated cursor */
+.typed-cursor,
+.typed-text .typed-cursor,
+.typed-text::after {
+  display: inline !important;
+  vertical-align: baseline !important;
+  line-height: inherit !important;
+  white-space: nowrap !important;
 }
 
 /* Right Box Content */
@@ -869,13 +889,18 @@ button:hover a {
 }
 
 .skills-category {
-  margin-bottom: 60px;
+  margin-bottom: 40px;
   background: rgba(255, 0, 0, 0.05);
   border: 1px solid rgba(255, 0, 0, 0.2);
   border-radius: 20px;
   padding: 40px;
   position: relative;
   overflow: hidden;
+  transition: margin-bottom 0.3s ease;
+}
+
+.skills-category.category-collapsed {
+  margin-bottom: 20px;
 }
 
 /* Category Header for Toggle */
@@ -897,8 +922,9 @@ button:hover a {
 .toggle-icon {
   font-size: 1.2rem;
   color: #ff0000;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease;
   margin-left: 10px;
+  will-change: transform;
 }
 
 .category-header:hover .toggle-icon {
@@ -952,23 +978,32 @@ button:hover a {
   gap: 25px;
   position: relative;
   z-index: 2;
-  transition: all 0.5s ease;
   overflow: hidden;
+  transform-origin: top;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 /* Collapsed and Expanded States */
 .skills-grid.collapsed {
-  max-height: 0;
+  transform: scaleY(0);
   opacity: 0;
-  margin-top: 0;
-  grid-template-rows: 0fr;
+  pointer-events: none;
+  height: 0;
+  margin: 0;
+  min-height: 0;
+  gap: 0;
+  padding: 0;
 }
 
 .skills-grid.expanded {
-  max-height: 2000px;
+  transform: scaleY(1);
   opacity: 1;
+  pointer-events: all;
+  height: auto;
   margin-top: 20px;
-  grid-template-rows: 1fr;
+  gap: 25px;
 }
 
 .skill-item {
@@ -1061,9 +1096,11 @@ button:hover a {
   background: linear-gradient(90deg, #ff0000, #ff6666);
   border-radius: 20px;
   width: 0%;
-  transition: width 1.5s ease-in-out;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   animation: progressGlow 2s ease-in-out infinite alternate;
+  will-change: width;
+  transform: translateZ(0);
 }
 
 @keyframes progressGlow {
@@ -1135,6 +1172,20 @@ button:hover a {
     text-align: left;
   }
   
+  /* Mobile performance optimizations */
+  .skills-grid {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+  
+  .toggle-icon {
+    will-change: transform;
+  }
+  
+  .skill-progress {
+    will-change: width;
+  }
+  
   .toggle-icon {
     font-size: 1.5rem;
   }
@@ -1164,6 +1215,20 @@ button:hover a {
   
   .skill-info {
     width: 100%;
+  }
+  
+  /* Enhanced mobile optimizations */
+  .skills-grid {
+    gap: 15px;
+    grid-template-columns: 1fr;
+  }
+  
+  .category-header {
+    padding: 8px 0;
+  }
+  
+  .toggle-icon {
+    font-size: 1rem;
   }
   
   .category-title {
