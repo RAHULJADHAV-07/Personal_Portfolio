@@ -210,8 +210,11 @@
   <div class="skills-wrapper">
     <!-- Languages Section -->
     <div class="skills-category">
-      <h2 class="category-title"><i class="fas fa-code"></i> Programming Languages</h2>
-      <div class="skills-grid">
+      <div class="category-header" onclick="toggleSkillCategory(this)">
+        <h2 class="category-title"><i class="fas fa-code"></i> Programming Languages</h2>
+        <i class="fas fa-chevron-down toggle-icon"></i>
+      </div>
+      <div class="skills-grid collapsed">
         <div class="skill-item" data-level="90">
           <div class="skill-icon"><i class="fab fa-js-square"></i></div>
           <div class="skill-info">
@@ -248,8 +251,11 @@
 
     <!-- Frontend Section -->
     <div class="skills-category">
-      <h2 class="category-title"><i class="fas fa-paint-brush"></i> Frontend Technologies</h2>
-      <div class="skills-grid">
+      <div class="category-header" onclick="toggleSkillCategory(this)">
+        <h2 class="category-title"><i class="fas fa-paint-brush"></i> Frontend Technologies</h2>
+        <i class="fas fa-chevron-down toggle-icon"></i>
+      </div>
+      <div class="skills-grid collapsed">
         <div class="skill-item" data-level="95">
           <div class="skill-icon"><i class="fab fa-html5"></i></div>
           <div class="skill-info">
@@ -315,8 +321,11 @@
 
     <!-- Backend Section -->
     <div class="skills-category">
-      <h2 class="category-title"><i class="fas fa-server"></i> Backend Technologies</h2>
-      <div class="skills-grid">
+      <div class="category-header" onclick="toggleSkillCategory(this)">
+        <h2 class="category-title"><i class="fas fa-server"></i> Backend Technologies</h2>
+        <i class="fas fa-chevron-down toggle-icon"></i>
+      </div>
+      <div class="skills-grid collapsed">
         <div class="skill-item" data-level="70">
           <div class="skill-icon"><i class="fab fa-node-js"></i></div>
           <div class="skill-info">
@@ -352,8 +361,11 @@
 
     <!-- Databases Section -->
     <div class="skills-category">
-      <h2 class="category-title"><i class="fas fa-database"></i> Databases</h2>
-      <div class="skills-grid">
+      <div class="category-header" onclick="toggleSkillCategory(this)">
+        <h2 class="category-title"><i class="fas fa-database"></i> Databases</h2>
+        <i class="fas fa-chevron-down toggle-icon"></i>
+      </div>
+      <div class="skills-grid collapsed">
         <div class="skill-item" data-level="75">
           <div class="skill-icon"><i class="fas fa-leaf"></i></div>
           <div class="skill-info">
@@ -389,8 +401,11 @@
 
     <!-- Developer Tools Section -->
     <div class="skills-category">
-      <h2 class="category-title"><i class="fas fa-tools"></i> Developer Tools</h2>
-      <div class="skills-grid">
+      <div class="category-header" onclick="toggleSkillCategory(this)">
+        <h2 class="category-title"><i class="fas fa-tools"></i> Developer Tools</h2>
+        <i class="fas fa-chevron-down toggle-icon"></i>
+      </div>
+      <div class="skills-grid collapsed">
         <div class="skill-item" data-level="85">
           <div class="skill-icon"><i class="fab fa-git-alt"></i></div>
           <div class="skill-info">
@@ -446,8 +461,11 @@
 
     <!-- Design & Other Skills -->
     <div class="skills-category">
-      <h2 class="category-title"><i class="fas fa-palette"></i> Design & Other Skills</h2>
-      <div class="skills-grid">
+      <div class="category-header" onclick="toggleSkillCategory(this)">
+        <h2 class="category-title"><i class="fas fa-palette"></i> Design & Other Skills</h2>
+        <i class="fas fa-chevron-down toggle-icon"></i>
+      </div>
+      <div class="skills-grid collapsed">
         <div class="skill-item" data-level="75">
           <div class="skill-icon"><i class="fas fa-paint-brush"></i></div>
           <div class="skill-info">
@@ -929,6 +947,50 @@ function myFunction() {
     x.style.display = "none";
   } else {
     x.style.display = "flex";
+  }
+}
+
+// Function to toggle skill categories
+function toggleSkillCategory(element) {
+  const category = element.parentElement;
+  const skillsGrid = category.querySelector('.skills-grid');
+  const toggleIcon = element.querySelector('.toggle-icon');
+  
+  if (skillsGrid.classList.contains('collapsed')) {
+    // Expand the category
+    skillsGrid.classList.remove('collapsed');
+    skillsGrid.classList.add('expanded');
+    toggleIcon.style.transform = 'rotate(180deg)';
+    
+    // Animate skill bars
+    setTimeout(() => {
+      const skillItems = skillsGrid.querySelectorAll('.skill-item');
+      skillItems.forEach((item, index) => {
+        setTimeout(() => {
+          const progress = item.querySelector('.skill-progress');
+          const level = item.getAttribute('data-level');
+          if (progress && level) {
+            progress.style.width = level + '%';
+          }
+          item.setAttribute('data-visible', 'true');
+        }, index * 100);
+      });
+    }, 300);
+  } else {
+    // Collapse the category
+    skillsGrid.classList.remove('expanded');
+    skillsGrid.classList.add('collapsed');
+    toggleIcon.style.transform = 'rotate(0deg)';
+    
+    // Reset skill bars
+    const skillItems = skillsGrid.querySelectorAll('.skill-item');
+    skillItems.forEach((item) => {
+      const progress = item.querySelector('.skill-progress');
+      if (progress) {
+        progress.style.width = '0%';
+      }
+      item.setAttribute('data-visible', 'false');
+    });
   }
 }
 

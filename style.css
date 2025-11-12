@@ -782,6 +782,14 @@ button:hover a {
   
   .action-buttons {
     flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .btn-primary, .btn-secondary {
+    width: auto;
+    min-width: 200px;
+    justify-content: center;
   }
   
   .floating-icons {
@@ -812,6 +820,16 @@ button:hover a {
   
   .name-title {
     font-size: 1.8rem;
+  }
+  
+  .action-buttons {
+    padding: 0 20px;
+  }
+  
+  .btn-primary, .btn-secondary {
+    min-width: 180px;
+    padding: 12px 25px;
+    font-size: 0.9rem;
   }
   
   .timeline-container {
@@ -860,6 +878,34 @@ button:hover a {
   overflow: hidden;
 }
 
+/* Category Header for Toggle */
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px 0;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 3;
+}
+
+.category-header:hover {
+  transform: translateX(5px);
+}
+
+.toggle-icon {
+  font-size: 1.2rem;
+  color: #ff0000;
+  transition: transform 0.3s ease;
+  margin-left: 10px;
+}
+
+.category-header:hover .toggle-icon {
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+}
+
 .skills-category::before {
   content: '';
   position: absolute;
@@ -880,13 +926,14 @@ button:hover a {
   color: #ff0000;
   font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 30px;
+  margin-bottom: 0;
   display: flex;
   align-items: center;
   gap: 15px;
   text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
   position: relative;
   z-index: 2;
+  transition: all 0.3s ease;
 }
 
 .category-title::after {
@@ -905,6 +952,23 @@ button:hover a {
   gap: 25px;
   position: relative;
   z-index: 2;
+  transition: all 0.5s ease;
+  overflow: hidden;
+}
+
+/* Collapsed and Expanded States */
+.skills-grid.collapsed {
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+  grid-template-rows: 0fr;
+}
+
+.skills-grid.expanded {
+  max-height: 2000px;
+  opacity: 1;
+  margin-top: 20px;
+  grid-template-rows: 1fr;
 }
 
 .skill-item {
@@ -1066,6 +1130,15 @@ button:hover a {
     font-size: 1.5rem;
   }
   
+  .category-header {
+    flex-direction: row;
+    text-align: left;
+  }
+  
+  .toggle-icon {
+    font-size: 1.5rem;
+  }
+  
   .skill-item {
     padding: 20px;
     gap: 15px;
@@ -1095,8 +1168,16 @@ button:hover a {
   
   .category-title {
     font-size: 1.3rem;
-    text-align: center;
-    justify-content: center;
+    text-align: left;
+    justify-content: flex-start;
+  }
+  
+  .category-header {
+    gap: 10px;
+  }
+  
+  .toggle-icon {
+    font-size: 1.3rem;
   }
 }
 
@@ -2161,8 +2242,16 @@ button:hover a {
   }
   
   .social-options {
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .social-btn {
+    flex: 0 1 calc(50% - 4px);
+    min-width: 90px;
+    justify-content: center;
   }
   
   .response-info {
@@ -2191,6 +2280,25 @@ button:hover a {
   .form-group select,
   .form-group textarea {
     padding: 10px 15px;
+  }
+  
+  .social-options {
+    gap: 6px;
+  }
+  
+  .social-btn {
+    flex: 0 1 calc(50% - 3px);
+    min-width: 85px;
+    padding: 8px 10px;
+    font-size: 0.85rem;
+  }
+  
+  .social-btn span {
+    display: none;
+  }
+  
+  .social-btn i {
+    font-size: 1.2rem;
   }
   
   .map-section,
