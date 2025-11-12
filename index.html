@@ -23,16 +23,42 @@
 <div class="topnav">
   <a href="#home" class="active">
     <h3>&nbsp;<i class="fa-solid fa-ghost"></i> Portfolio</h3></a>
+  
+  <!-- Hidden mobile menu -->
   <div id="myLinks">
     <a href="#About">About</a>
     <a href="#Skill">Skill</a>
     <a href="#Project">Project</a>
+    <a href="#Certificates">Certificates</a>
     <a href="#Contact">Contact</a>
   </div>
-  <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-    <i class="fa fa-bars"></i>
-  </a>
 </div>
+
+<!-- Fixed hamburger menu button with ghost icon -->
+<button class="hamburger-btn-fixed" onclick="toggleMobileMenu()">
+  <i class="fa-solid fa-ghost"></i>
+</button>
+
+<!-- Mobile Slide Menu -->
+<div class="mobile-slide-menu" id="mobileSlideMenu">
+  <div class="slide-menu-header">
+    <h3><i class="fa-solid fa-ghost"></i> Menu</h3>
+    <button class="close-menu-btn" onclick="toggleMobileMenu()">
+      <i class="fa-solid fa-times"></i>
+    </button>
+  </div>
+  <nav class="slide-menu-nav">
+    <a href="#home" onclick="toggleMobileMenu()"><i class="fa-solid fa-home"></i> Home</a>
+    <a href="#About" onclick="toggleMobileMenu()"><i class="fa-solid fa-user"></i> About</a>
+    <a href="#Skill" onclick="toggleMobileMenu()"><i class="fa-solid fa-cogs"></i> Skills</a>
+    <a href="#Project" onclick="toggleMobileMenu()"><i class="fa-solid fa-project-diagram"></i> Projects</a>
+    <a href="#Certificates" onclick="toggleMobileMenu()"><i class="fa-solid fa-trophy"></i> Certificates</a>
+    <a href="#Contact" onclick="toggleMobileMenu()"><i class="fa-solid fa-envelope"></i> Contact</a>
+  </nav>
+</div>
+
+<!-- Menu Overlay -->
+<div class="menu-overlay" id="menuOverlay" onclick="toggleMobileMenu()"></div>
 <!-- Navbar end -->
 <!-- Home Section Start -->
 <div class="mobile-container">
@@ -941,13 +967,33 @@
   <!-- ========== End Contact ========== -->
   
 <script>
-function myFunction() {
-  var x = document.getElementById("myLinks");
-  if (x.style.display === "flex") {
-    x.style.display = "none";
+// Function to toggle mobile slide menu
+function toggleMobileMenu() {
+  const slideMenu = document.getElementById('mobileSlideMenu');
+  const overlay = document.getElementById('menuOverlay');
+  
+  if (slideMenu.classList.contains('active')) {
+    // Close menu
+    slideMenu.classList.remove('active');
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+    document.body.classList.remove('menu-open');
   } else {
-    x.style.display = "flex";
+    // Open menu
+    slideMenu.classList.add('active');
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    document.body.classList.add('menu-open');
   }
+}
+
+// Close menu when clicking on a link
+function closeMenuOnClick() {
+  const slideMenu = document.getElementById('mobileSlideMenu');
+  const overlay = document.getElementById('menuOverlay');
+  slideMenu.classList.remove('active');
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
 }
 
 // Function to toggle skill categories
